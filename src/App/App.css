@@ -1,0 +1,13 @@
+body {
+  box-sizing: border-box;
+}
+
+.sidebar {
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: darkolivegreen;
+  width: 320px;
+  height: 100%;
+}
