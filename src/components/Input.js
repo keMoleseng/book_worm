@@ -6,6 +6,7 @@ export default function Input(props) {
         <TextField 
             label={label}
             type={type}
+            size="small"
             // name={name}
             // value={value}
             // onChange={onChange}
