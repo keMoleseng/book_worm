@@ -3,6 +3,7 @@ import Books from '../pages/Books';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { Box , CssBaseline} from '@mui/material';
+import BookForm from '../pages/BookForm';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       >
         <Header />
         <Books />  
+        <BookForm />
       </Box>
       <CssBaseline sx={{ height: "100%"}} />
     </>
