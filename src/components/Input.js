@@ -7,9 +7,9 @@ export default function Input(props) {
             label={label}
             type={type}
             size="small"
-            // name={name}
-            // value={value}
-            // onChange={onChange}
+            name={name}
+            value={value}
+            onChange={onChange}
             variant="outlined"
         />
     )

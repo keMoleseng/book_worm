@@ -1,4 +1,5 @@
 import { Box, Grid } from '@mui/material';
+import { useState } from 'react';
 import Controls from '../components/Controls';
 
 const completed = [
@@ -18,8 +19,29 @@ const genres = () => ([
     {id: '8', title: 'Other'}
 ])
 
+const initialValues = {
+    title: "",
+    author: "",
+    publisher: "",
+    year: "",
+    genre: "",
+    readComplete: "no"
+}
+
 export default function BookForm() {
-    
+    const [values, setValues] = useState(initialValues);
+
+    const handleChange = e => {
+        e.preventDefault();
+        const { name, value} = e.target;
+
+        setValues({
+            ...values,
+            [name]: value
+        })
+    }
+
+    console.log(values)
     return (
             <Box component='form'
                 sx={{
@@ -42,16 +64,22 @@ export default function BookForm() {
                         label="Title"
                         type="text"
                         name="title"
+                        value={values.title}
+                        onChange={handleChange}
                     />
                     <Controls.Input 
                         label="Author"
                         type="text"
                         name="author"
+                        value={values.author}
+                        onChange={handleChange}
                     />
                     <Controls.Input
                         label="Publisher"
                         type="text"
                         name="publisher"
+                        value={values.publisher}
+                        onChange={handleChange}
                     />
                     </Grid>
                     <Grid item sm={6}
@@ -64,18 +92,22 @@ export default function BookForm() {
                             label="Year Released"
                             type="text"
                             name="year"
+                            value={values.year}
+                            onChange={handleChange}
                         />
                         <Controls.Select
                             label="Genre"
                             options={genres()}
-                            value=''
+                            value={values.genre}
                             name="genre"
+                            onChange={handleChange}
                         />
                         <Controls.RadioGroup
-                            title="Completed"
+                            label="Completed"
                             name="readComplete"
                             items={completed}
-
+                            value={values.completed}
+                            onChange={handleChange}
                         />
                         <Box component="div" sx={{display: "flex"}}>
                             <Controls.Button

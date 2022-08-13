@@ -10,6 +10,7 @@ export default function Select(props) {
                 value={value}
                 name={name}
                 label={label}
+                onChange={onChange}
                 size='small'
                 
             >
