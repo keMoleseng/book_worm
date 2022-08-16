@@ -1,19 +1,24 @@
 import { AppBar, Badge, Grid, Toolbar, InputBase, IconButton } from "@mui/material";
-import styled from '@emotion/styled';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Box } from '@mui/material';
 
 export default function Header() {
      const handleClick = e => (
         alert("Clicked")
      )
     return (
+        <Box component='div'
+            sx={{
+                paddingLeft: "320px",
+                width: "100%",         
+            }}
+        >
             <AppBar position="static" 
                 sx={{
                     transform: "translateZ(0)",
                     backgroundColor: "tan"
-                    
                 }}
             >
                 <Toolbar>
@@ -64,5 +69,6 @@ export default function Header() {
                     </Grid>
                 </Toolbar>
             </AppBar>
+        </Box>
     )
 }
