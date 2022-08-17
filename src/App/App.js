@@ -11,6 +11,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Login from '../pages/loginPage';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       
       <Header />
       <Routes>
+        <Route path='/login' element={<Login />} />
         <Route path='/' element={<Home />} />
         <Route path='/favourites' element={<Favourites />} />
         <Route path='/library' element={<Books />}  />
