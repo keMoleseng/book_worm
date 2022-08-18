@@ -1,11 +1,7 @@
 import { Box, Grid } from '@mui/material';
-import { useState } from 'react';
+import { Form, useForm } from '../components/useForm';
 import Controls from '../components/Controls';
-
-const completed = [
-    {id: "0", title: "Yes"},
-    {id: "1", title: "No"}
-];
+import { useState } from 'react';
 
 const genres = () => ([
     {id: '0', title: 'Fantasy'},
@@ -25,25 +21,19 @@ const initialValues = {
     publisher: "",
     year: "",
     genre: "",
-    readComplete: "no"
+    readComplete: false,
+    pageNo: ''
 }
 
 export default function BookForm() {
-    const [values, setValues] = useState(initialValues);
-
-    const handleChange = e => {
-        e.preventDefault();
-        const { name, value} = e.target;
-
-        setValues({
-            ...values,
-            [name]: value
-        })
-    }
-
-    console.log(values)
+    const {
+        values,
+        setValues,
+        handleChange
+    } = useForm(initialValues)
+    
     return (
-            <Box component='form'
+            <Form
                 sx={{
                     "& .MuiFormControl-root": {
                     margin: (theme) => theme.spacing(1),
@@ -66,6 +56,7 @@ export default function BookForm() {
                         name="title"
                         value={values.title}
                         onChange={handleChange}
+                        required
                     />
                     <Controls.Input 
                         label="Author"
@@ -73,6 +64,7 @@ export default function BookForm() {
                         name="author"
                         value={values.author}
                         onChange={handleChange}
+                        required
                     />
                     <Controls.Input
                         label="Publisher"
@@ -81,20 +73,20 @@ export default function BookForm() {
                         value={values.publisher}
                         onChange={handleChange}
                     />
+                    <Controls.Input 
+                        label="Year Released"
+                        type="text"
+                        name="year"
+                        value={values.year}
+                        onChange={handleChange}
+                    />
                     </Grid>
                     <Grid item sm={6}
                         sx={{
                             display: "flex",
                             flexDirection: "column"
                         }}
-                    >
-                        <Controls.Input 
-                            label="Year Released"
-                            type="text"
-                            name="year"
-                            value={values.year}
-                            onChange={handleChange}
-                        />
+                    >   
                         <Controls.Select
                             label="Genre"
                             options={genres()}
@@ -102,25 +94,38 @@ export default function BookForm() {
                             name="genre"
                             onChange={handleChange}
                         />
-                        <Controls.RadioGroup
-                            label="Completed"
-                            name="readComplete"
-                            items={completed}
-                            value={values.completed}
+                         <Controls.Input 
+                            label="Current Page"
+                            type="text"
+                            name="pageNo"
+                            value={values.pageNo}
                             onChange={handleChange}
+                        />
+                        <Controls.Checkbox
+                            label="Read Complete"
+                            name="readComplete"
+                            value={values.readComplete}
+                            onChange={handleChange}
+                            
                         />
                         <Box component="div" sx={{display: "flex"}}>
                             <Controls.Button
                                 text="Submit"
                                 color="primary"
+                                sx={{
+                                    marginLeft: theme => theme.spacing(1)
+                                }}
                             />    
                             <Controls.Button
                                 text="Reset"
                                 color="grey"
+                                sx={{
+                                    marginLeft: theme => theme.spacing(1)
+                                }}
                             />
                         </Box>
                     </Grid>
                 </Grid>
-            </Box>
+            </Form>
     )
 }
