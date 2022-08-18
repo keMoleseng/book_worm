@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 
 export function useForm( initialValues ) {
     const [values, setValues] = useState(initialValues);
-    console.log(values)
     const handleChange = e => {
         const { name, value } = e.target;
 
