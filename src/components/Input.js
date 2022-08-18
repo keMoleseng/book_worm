@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 
 export default function Input(props) {
-    const { label, type, onChange, placeholder, value, name } = props; 
+    const { label, type, onChange, variant, value, name, ...other } = props; 
     return (
         <TextField 
             label={label}
@@ -10,7 +10,8 @@ export default function Input(props) {
             name={name}
             value={value}
             onChange={onChange}
-            variant="outlined"
+            variant= {variant ? variant : `outlined`}
+            { ...other }
         />
     )
 }

@@ -3,8 +3,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
+    const navigate = useNavigate();
      const handleClick = e => (
         alert("Clicked")
      )
@@ -62,7 +64,7 @@ export default function Header() {
                                     />
                                 </Badge>
                             </IconButton>
-                            <IconButton onClick={handleClick}>
+                            <IconButton onClick={() => navigate('/login')}>
                                 <LogoutIcon />
                             </IconButton>
                         </Grid>

@@ -1,6 +1,6 @@
 import PageHeader from '../components/PageHeader';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import BookForm from '../pages/BookForm';
 
 export default function Books() {
@@ -9,15 +9,23 @@ export default function Books() {
                 sx={{
                 paddingLeft: "320px",
                 width: "100%",
-                backgroundColor: "beige"
+                backgroundColor: "beige",
+                height: '90vh'
                 }}  
             >
                 <PageHeader 
                     title="Heading"
                     subtitle="Sub-heading"
                     icon={<LibraryBooksIcon />}
-                />  
-                <BookForm /> 
+                /> 
+                <Paper
+                    sx={{
+                        margin: (theme) => theme.spacing(5),
+                        padding: (theme) => theme.spacing(3)
+                    }}
+                >
+                    <BookForm /> 
+                </Paper> 
             </Box>     
     )
 }

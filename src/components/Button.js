@@ -1,14 +1,12 @@
 import { Button as MuiButton } from '@mui/material'
 
 export default function Button(props) {
-    const { color, text, name, value } = props;
+    const { color, text, name, value, ...other } = props;
     return (
         <MuiButton
-            sx={{
-                marginLeft: theme => theme.spacing(1)
-            }}
             variant="contained"
             color={color}
+            { ...other }
         >
             {text}
         </MuiButton>
