@@ -1,43 +1,72 @@
 import { Box, Grid } from '@mui/material';
 import { Form, useForm } from '../components/useForm';
 import Controls from '../components/Controls';
-import { useState } from 'react';
-
-const genres = () => ([
-    {id: '0', title: 'Fantasy'},
-    {id: '1', title: 'Sci-Fi'},
-    {id: '2', title: 'Mystery'},
-    {id: '3', title: 'Thriller'},
-    {id: '4', title: 'Romance'},
-    {id: '5', title: 'Western'},
-    {id: '6', title: 'Contemporary'},
-    {id: '7', title: 'Non-fiction'},
-    {id: '8', title: 'Other'}
-])
+import * as bookServices from '../services/book.service'
+import { useEffect } from 'react';
 
 const initialValues = {
+    id: 0,
     title: "",
     author: "",
     publisher: "",
     year: "",
-    genre: "",
-    readComplete: false,
+    genreId: "",
+    readComplete: true,
     pageNo: ''
 }
 
-export default function BookForm() {
+export default function BookForm(props) {
+    const { addOrEdit, recordForEdit } = props;
+
+    const validate = (fieldValues = values) => {
+        let temp = {...errors};
+        if('title' in fieldValues)
+            temp.title = fieldValues.title ? '' : 'Please fill out the title of the book.'
+        if('author' in fieldValues)
+            temp.author = fieldValues.author ? '' : 'Please fill out the author of the book.'
+        if('pageNo' in fieldValues)
+            temp.pageNo = !fieldValues.readComplete && !fieldValues.pageNo? 'Please fill out last page read.' : ''
+
+        setErrors({
+            ...temp
+        })
+
+        if(fieldValues === values)
+            return Object.values(temp).every(x => x === '');
+    }
+
     const {
         values,
         setValues,
-        handleChange
-    } = useForm(initialValues)
+        errors,
+        setErrors,
+        handleChange,
+        resetForm
+    } = useForm(initialValues, true, validate)
+    
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        if(validate()){
+            addOrEdit(values, resetForm);
+            
+        }
+    }
+
+    useEffect(() => {
+        if(recordForEdit != null)
+        setValues({
+            ...recordForEdit
+        })
+    }, [recordForEdit])
     
     return (
             <Form
+                onSubmit={handleSubmit}
                 sx={{
                     "& .MuiFormControl-root": {
                     margin: (theme) => theme.spacing(1),
-                    width: "80%"
+                    
                     }
                 }}
             >
@@ -56,7 +85,7 @@ export default function BookForm() {
                         name="title"
                         value={values.title}
                         onChange={handleChange}
-                        required
+                        error={errors.title}
                     />
                     <Controls.Input 
                         label="Author"
@@ -64,7 +93,7 @@ export default function BookForm() {
                         name="author"
                         value={values.author}
                         onChange={handleChange}
-                        required
+                        error={errors.author}
                     />
                     <Controls.Input
                         label="Publisher"
@@ -89,9 +118,9 @@ export default function BookForm() {
                     >   
                         <Controls.Select
                             label="Genre"
-                            options={genres()}
-                            value={values.genre}
-                            name="genre"
+                            options={bookServices.getGenres()}
+                            value={values.genreId}
+                            name="genreId"
                             onChange={handleChange}
                         />
                          <Controls.Input 
@@ -100,6 +129,7 @@ export default function BookForm() {
                             name="pageNo"
                             value={values.pageNo}
                             onChange={handleChange}
+                            error={errors.pageNo}
                         />
                         <Controls.Checkbox
                             label="Read Complete"
@@ -111,6 +141,7 @@ export default function BookForm() {
                         <Box component="div" sx={{display: "flex"}}>
                             <Controls.Button
                                 text="Submit"
+                                type='submit'
                                 color="primary"
                                 sx={{
                                     marginLeft: theme => theme.spacing(1)
@@ -119,6 +150,7 @@ export default function BookForm() {
                             <Controls.Button
                                 text="Reset"
                                 color="grey"
+                                onClick={resetForm}
                                 sx={{
                                     marginLeft: theme => theme.spacing(1)
                                 }}

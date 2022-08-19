@@ -3,22 +3,30 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { Box, InputAdornment, ListItem, Paper, TableBody, TableCell, TableRow, Toolbar } from '@mui/material';
 import BookForm from '../pages/BookForm';
 import useTable from '../components/useTable';
-import * as booksServices from '../services/book.service'
+import * as bookServices from '../services/book.service'
 import { useState } from 'react';
 import Controls from '../components/Controls';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import Popup from '../components/Popup';
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 
 const headCells = [
     { id: 'title', label: 'Title' }, 
     { id: 'author', label: 'Author' }, 
     { id: 'publisher', label: 'Publisher' },
     { id: 'genre', label: 'Genre' },
-    { id: 'year', label: 'Year' }  
+    { id: 'year', label: 'Year' },
+    { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
 export default function Books() {
-    const [records, setRecords] = useState(booksServices.getAllBooks());
-    const [filterfn, setFilterFn] = useState({ fn: items => {return items} })
+    const [recordForEdit, setRecordForEdit] = useState(null)
+    const [records, setRecords] = useState(bookServices.getAllBooks());
+    const [filterfn, setFilterFn] = useState({ fn: items => {return items} });
+    const [openPopup, setOpenPopup] = useState(false);
+
     const {
         TblContainer,
         TblHead,
@@ -37,6 +45,23 @@ export default function Books() {
         })
         
     }
+
+    const addOrEdit = (book, resetForm) => {
+        if(book.id === 0)
+            bookServices.insertBook(book);
+        else
+            bookServices.updateBook(book)
+        resetForm();
+        setRecordForEdit(null)
+        setOpenPopup(false);
+        setRecords(bookServices.getAllBooks())
+    }
+
+    const openInPopup = item => {
+        setRecordForEdit(item);
+        setOpenPopup(true);
+    }
+
     return(   
             <Box component="div" 
                 sx={{
@@ -57,7 +82,11 @@ export default function Books() {
                         padding: (theme) => theme.spacing(3)
                     }}
                 >
-                    <Toolbar>
+                    <Toolbar
+                        sx={{
+                            justifyContent: 'space-between'
+                        }}
+                    >
                         <Controls.Input 
                             label='Search Book'
                             sx={{
@@ -73,7 +102,14 @@ export default function Books() {
                             }}
                             onChange={handleSearch}
                         />
+                        <Controls.Button 
+                            text='Add Book'
+                            variant='outlined'  
+                            onClick={() => {setOpenPopup(true); setRecordForEdit(null)}}
+                            startIcon={<AddIcon />}
+                        />
                     </Toolbar>
+                    
                     <TblContainer>
                         <TblHead />
                         <TableBody >
@@ -84,15 +120,48 @@ export default function Books() {
                                     <TableCell >{record.publisher} </TableCell>
                                     <TableCell >{record.genre} </TableCell>
                                     <TableCell >{record.year} </TableCell>
+                                    <TableCell sx={{display: 'flex'}}>
+                                        <Controls.ActionButton
+                                            onClick={() => {openInPopup(record)}}
+                                            sx={{ 
+                                                minWidth: '0',
+                                                margin: theme => theme.spacing(.25),
+                                                padding: theme => theme.spacing(.2),
+                                                backgroundColor: '#ADD8E6',
+                                                color: "#333996"
+                                            }}
+                                        >
+                                            <EditIcon fontSize='small' />
+                                        </Controls.ActionButton>
+                                        <Controls.ActionButton
+                                            sx={{ 
+                                                minWidth: '0',
+                                                margin: theme => theme.spacing(.25),
+                                                padding: theme => theme.spacing(.2),
+                                                backgroundColor: '#ffcccb',
+                                                color: theme => theme.palette.error.dark
+                                            }}
+                                        >
+                                            <CloseIcon fontSize='small' />
+                                        </Controls.ActionButton>
+                                    </TableCell>
                                     {/* <TableCell>{record.pageNo} </TableCell> */}
                                    
                                 </TableRow>
                             ))}
                         </TableBody>
                     </TblContainer>
-                    {/* <BookForm />  */}
+                     
                     <TblPagination />
-                </Paper> 
+                </Paper>
+                <Popup 
+                    title='Book Form'
+                    openPopup={openPopup} 
+                    setOpenPopup={setOpenPopup}>
+                    <BookForm 
+                        recordForEdit={recordForEdit}
+                        addOrEdit={addOrEdit}/>
+                </Popup>
             </Box>     
     )
 }
