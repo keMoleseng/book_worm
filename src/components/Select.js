@@ -2,7 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select as MuiSelect } from '@mui/mat
 
 export default function Select(props) {
     const {label, value, onChange, items, options, name} = props;
-
+    console.log(options)
     return (
         <FormControl>
             <InputLabel>{label}</InputLabel>

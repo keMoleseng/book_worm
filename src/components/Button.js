@@ -6,7 +6,12 @@ export default function Button(props) {
         <MuiButton
             variant="contained"
             color={color}
-            { ...other }
+            {...other}
+            sx={{
+                margin: (theme) => theme.spacing(.6),
+                textTransform: 'none'
+            }}
+            
         >
             {text}
         </MuiButton>
