@@ -1,10 +1,12 @@
 import PageHeader from '../components/PageHeader';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Box, ListItem, Paper, TableBody, TableCell, TableRow } from '@mui/material';
+import { Box, InputAdornment, ListItem, Paper, TableBody, TableCell, TableRow, Toolbar } from '@mui/material';
 import BookForm from '../pages/BookForm';
 import useTable from '../components/useTable';
 import * as booksServices from '../services/book.service'
 import { useState } from 'react';
+import Controls from '../components/Controls';
+import SearchIcon from '@mui/icons-material/Search';
 
 const headCells = [
     { id: 'title', label: 'Title' }, 
@@ -15,14 +17,26 @@ const headCells = [
 ]
 
 export default function Books() {
-    const [records, setRecords] = useState(booksServices.getAllBooks())
+    const [records, setRecords] = useState(booksServices.getAllBooks());
+    const [filterfn, setFilterFn] = useState({ fn: items => {return items} })
     const {
         TblContainer,
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(records, headCells);
+    } = useTable(records, headCells, filterfn);
 
+    const handleSearch = e => {
+        const target = e.target;
+        setFilterFn({
+            fn: items => {
+                if(target.value === '')
+                    return items;
+                return items.filter(x => x.title.toLowerCase().includes(target.value))
+            }
+        })
+        
+    }
     return(   
             <Box component="div" 
                 sx={{
@@ -43,6 +57,23 @@ export default function Books() {
                         padding: (theme) => theme.spacing(3)
                     }}
                 >
+                    <Toolbar>
+                        <Controls.Input 
+                            label='Search Book'
+                            sx={{
+                                width: '75%'
+                            }}
+                            InputProps={{
+                                startAdornment:
+                                (
+                                    <InputAdornment position='start'>
+                                        <SearchIcon fontSize='small' />
+                                    </InputAdornment>
+                                )
+                            }}
+                            onChange={handleSearch}
+                        />
+                    </Toolbar>
                     <TblContainer>
                         <TblHead />
                         <TableBody >
