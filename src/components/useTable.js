@@ -2,9 +2,6 @@ import { Table, TableCell, TableHead, TablePagination, TableRow, TableSortLabel 
 import { useState } from "react";
 
 export default function useTable(records, headCells, filterFn) {
-    const pages = [5, 10, 25];
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
     const [order, setOrder] = useState();
     const [orderBy, setOrderBy] = useState();
 
@@ -61,28 +58,6 @@ export default function useTable(records, headCells, filterFn) {
     )
     }
 
-    const TblPagination = () => {
-        const handleChangePage = (e, newPage) => {
-            setPage(newPage)
-        }
-    
-        const handleChangeRowsPerPage = e => {
-            setRowsPerPage(parseInt(e.target.value, 10));
-            setPage(0)
-        }
-
-        return (
-        <TablePagination
-            component='div'
-            count={records.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPageOptions={pages}
-            rowsPerPage={rowsPerPage} 
-            onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-    )
-}
     function stableSort(array, comparator){
         const stabilizedThis = array.map((element, index) => [element, index]);
         
@@ -107,12 +82,11 @@ export default function useTable(records, headCells, filterFn) {
     }
 
     const recordsAfterPagingAndSorting = () => {
-        return stableSort(filterFn.fn(records), getComparator(order, orderBy)).slice(page*rowsPerPage, (page+1)*rowsPerPage)
+        return stableSort(filterFn.fn(records), getComparator(order, orderBy))
     }
     return{
         TblContainer,
         TblHead,
-        TblPagination,
         recordsAfterPagingAndSorting
     }
 }
