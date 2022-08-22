@@ -1,6 +1,6 @@
 import PageHeader from '../components/PageHeader';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Box, InputAdornment, ListItem, Paper, TableBody, TableCell, TableRow, Toolbar } from '@mui/material';
+import { Box, InputAdornment, ListItem, Paper, TableBody, TableCell, TablePagination, TableRow, Toolbar } from '@mui/material';
 import BookForm from '../pages/BookForm';
 import useTable from '../components/useTable';
 import * as bookServices from '../services/book.service'
@@ -11,6 +11,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Popup from '../components/Popup';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
+import Notification from '../components/Notification';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const headCells = [
     { id: 'title', label: 'Title' }, 
@@ -26,11 +28,15 @@ export default function Books() {
     const [records, setRecords] = useState(bookServices.getAllBooks());
     const [filterfn, setFilterFn] = useState({ fn: items => {return items} });
     const [openPopup, setOpenPopup] = useState(false);
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title:'', subtitle:'' });
+    const pages = [5, 10, 25];
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
 
     const {
         TblContainer,
         TblHead,
-        TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(records, headCells, filterfn);
 
@@ -54,12 +60,40 @@ export default function Books() {
         resetForm();
         setRecordForEdit(null)
         setOpenPopup(false);
-        setRecords(bookServices.getAllBooks())
+        setRecords(bookServices.getAllBooks());
+        setNotify({
+            isOpen: true,
+            message: 'Book submitted successfully!',
+            type: 'success'
+        })
     }
 
     const openInPopup = item => {
         setRecordForEdit(item);
         setOpenPopup(true);
+    }
+
+    const onDelete = id => {
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
+        bookServices.deleteBook(id);
+        setRecords(bookServices.getAllBooks());
+        setNotify({
+            isOpen: true,
+            message: 'Book deleted successfully!',
+            type: 'error'
+        })
+    }
+    
+    const handleChangePage = (e, newPage) => {
+        setPage(newPage)
+    }
+
+    const handleChangeRowsPerPage = e => {
+        setRowsPerPage(parseInt(e.target.value, 10));
+        setPage(0)
     }
 
     return(   
@@ -88,7 +122,7 @@ export default function Books() {
                         }}
                     >
                         <Controls.Input 
-                            label='Search Book'
+                            label='Search Book By Title'
                             sx={{
                                 width: '75%'
                             }}
@@ -113,7 +147,9 @@ export default function Books() {
                     <TblContainer>
                         <TblHead />
                         <TableBody >
-                            {recordsAfterPagingAndSorting().map(record => (
+                            {recordsAfterPagingAndSorting()
+                            .slice(page*rowsPerPage, (page+1)*rowsPerPage)
+                            .map(record => (
                                 <TableRow key={record.id} >
                                     <TableCell >{record.title} </TableCell>
                                     <TableCell >{record.author} </TableCell>
@@ -141,18 +177,31 @@ export default function Books() {
                                                 backgroundColor: '#ffcccb',
                                                 color: theme => theme.palette.error.dark
                                             }}
+                                            onClick={() => 
+                                                setConfirmDialog({
+                                                    isOpen: true,
+                                                    title: 'Delete item',
+                                                    subtitle: 'Are you sure? This book will be lost forever.',
+                                                    onConfirm: () => { onDelete(record.id) }
+                                                })
+                                            }
                                         >
                                             <CloseIcon fontSize='small' />
                                         </Controls.ActionButton>
                                     </TableCell>
-                                    {/* <TableCell>{record.pageNo} </TableCell> */}
-                                   
                                 </TableRow>
                             ))}
                         </TableBody>
-                    </TblContainer>
-                     
-                    <TblPagination />
+                        </TblContainer>
+                        <TablePagination
+                            component='div'
+                            count={records.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPageOptions={pages}
+                            rowsPerPage={rowsPerPage} 
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
                 </Paper>
                 <Popup 
                     title='Book Form'
@@ -162,6 +211,11 @@ export default function Books() {
                         recordForEdit={recordForEdit}
                         addOrEdit={addOrEdit}/>
                 </Popup>
+                <Notification notify={notify} setNotify={setNotify} />
+                <ConfirmDialog 
+                    confirmDialog={confirmDialog}
+                    setConfirmDialog={setConfirmDialog}
+                />
             </Box>     
     )
 }
