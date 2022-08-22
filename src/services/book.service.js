@@ -34,6 +34,20 @@ export function updateBook(data) {
     localStorage.setItem(KEYS.books, JSON.stringify(books));
 }
 
+export function addToComplete(data) {
+    let books = getAllBooks();
+    const recordIndex = books.findIndex(x => x.id === data.id);
+    books[recordIndex] = { ...data, readComplete: true};
+
+    localStorage.setItem(KEYS.books, JSON.stringify(books))
+}
+
+export function deleteBook(id) {
+    let books = getAllBooks();
+    books = books.filter(item => item.id !== id);
+    localStorage.setItem(KEYS.books, JSON.stringify(books))
+}
+
 export function generateBookId() {
     if(localStorage.getItem(KEYS.bookId) === null)
         localStorage.setItem(KEYS.bookId, '0');
