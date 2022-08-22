@@ -20,22 +20,24 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import HomeIcon from '@mui/icons-material/Home';
+import Bookmarks from "../pages/bookmarks";
+import DoneIcon from '@mui/icons-material/Done';
+import CompletedReads from "../pages/completed";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ToRead from "../pages/toRead";
 
 const routes = [
     {label: 'home' , icon: <HomeIcon />},
     {label: 'library' , icon: <LibraryBooksIcon />},
-    {label: 'favourites' , icon: <FavoriteIcon />},
-    {label: 'bookmarks' , icon: <BookmarksIcon />}
+    {label: 'bookmarks' , icon: <BookmarksIcon />},
+    {label: 'completed' , icon: <DoneIcon />},
+    {label: 'toRead' , icon: <FormatListBulletedIcon />},
+    {label: 'favourites' , icon: <FavoriteIcon />}
 ]
 
 export default function MainLayout() {
     return(
         <>  
-            {/* <div className='sidebar'>
-                <Link to='/'>Home</Link>
-                <Link to='/library'>Library</Link>
-                <Link to='/favourites'>Favourites</Link>
-            </div> */}
             <Drawer
                 sx={{
                     width: '320px',
@@ -69,7 +71,7 @@ export default function MainLayout() {
                                 {route.icon}
                             </ListItemIcon>
                              <RouterLink to={`/${route.label === 'home'? '' : route.label}`}>
-                                {route.label[0].toUpperCase()+route.label.slice(1)}
+                                {route.label === 'toRead' ? 'To Read' : route.label[0].toUpperCase()+route.label.slice(1)}
                             </RouterLink> 
                         </ListItemButton>
                     </ListItem>
@@ -81,16 +83,11 @@ export default function MainLayout() {
                 <Route path='/' element={<Home />} />
                 <Route path='/favourites' element={<Favourites />} />
                 <Route path='/library' element={<Books />}  />
+                <Route path='/bookmarks' element={<Bookmarks />}  />
+                <Route path='/completed' element={<CompletedReads />}  />
+                <Route path='/toRead' element={<ToRead />}  />
             </Routes>
             
         </>
     )
 }
-
-{/* <Link
-                                component={RouterLink}
-                                to={`/${route.label === 'home'? '' : route.label}`
-                            >
-                            {route.label[0].toUpperCase()+route.label.slice(1)}
-                            </Link>
-                                 */}
