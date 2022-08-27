@@ -1,8 +1,9 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, TextField } from '@mui/material';
 import { Form, useForm } from '../components/useForm';
 import Controls from '../components/Controls';
 import * as bookServices from '../services/book.service'
 import { useEffect } from 'react';
+
 
 const initialValues = {
     id: 0,
@@ -60,6 +61,7 @@ export default function BookForm(props) {
         })
     }, [recordForEdit])
     
+    console.log(values)
     return (
             <Form
                 onSubmit={handleSubmit}
@@ -102,13 +104,14 @@ export default function BookForm(props) {
                         value={values.publisher}
                         onChange={handleChange}
                     />
-                    <Controls.Input 
+                    <Controls.DatePicker 
                         label="Year Released"
                         type="text"
                         name="year"
                         value={values.year}
                         onChange={handleChange}
                     />
+                   
                     </Grid>
                     <Grid item sm={6}
                         sx={{
