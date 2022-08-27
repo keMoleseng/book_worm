@@ -10,7 +10,6 @@ export default function Notification(props) {
                 isOpen: false
             })
         }
-        console.log(notify)
     return(
         <Snackbar
             open={notify.isOpen}

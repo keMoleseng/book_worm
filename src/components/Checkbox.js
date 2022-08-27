@@ -14,6 +14,7 @@ export default function Checkbox(props) {
             <FormControlLabel 
                 control={
                     <MuiCheckbox 
+                    size="small"
                     onChange={e => onChange(changeToDefault(name, e.target.checked))}
                     checked={value}/>} 
                     label={label} 
