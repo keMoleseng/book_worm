@@ -24,7 +24,6 @@ export default function Bookmarks(props) {
     const {
         TblContainer,
         TblHead,
-        TblPagination,
         recordsAfterPagingAndSorting
     } = useTable(records, headCells, filterFn);
 
