@@ -1,6 +1,6 @@
 import PageHeader from '../components/PageHeader';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Box, InputAdornment, ListItem, Paper, TableBody, TableCell, TablePagination, TableRow, Toolbar } from '@mui/material';
+import { Box, InputAdornment, Paper, TableBody, TableCell, TablePagination, TableRow, Toolbar } from '@mui/material';
 import BookForm from '../pages/BookForm';
 import useTable from '../components/useTable';
 import * as bookServices from '../services/book.service'
@@ -155,7 +155,7 @@ export default function Books() {
                                     <TableCell >{record.author} </TableCell>
                                     <TableCell >{record.publisher} </TableCell>
                                     <TableCell >{record.genre} </TableCell>
-                                    <TableCell >{record.year} </TableCell>
+                                    <TableCell >{record.year.slice(0, 4)} </TableCell>
                                     <TableCell sx={{display: 'flex'}}>
                                         <Controls.ActionButton
                                             onClick={() => {openInPopup(record)}}
