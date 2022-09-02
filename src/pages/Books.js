@@ -13,6 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import Notification from '../components/Notification';
 import ConfirmDialog from '../components/ConfirmDialog';
+import EmptyList from '../components/EmptyList';
 
 const headCells = [
     { id: 'title', label: 'Title' }, 
@@ -33,7 +34,7 @@ export default function Books() {
     const pages = [5, 10, 25];
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
-
+    console.log(records)
     const {
         TblContainer,
         TblHead,
@@ -143,65 +144,72 @@ export default function Books() {
                             startIcon={<AddIcon />}
                         />
                     </Toolbar>
-                    
-                    <TblContainer>
-                        <TblHead />
-                        <TableBody >
-                            {recordsAfterPagingAndSorting()
-                            .slice(page*rowsPerPage, (page+1)*rowsPerPage)
-                            .map(record => (
-                                <TableRow key={record.id} >
-                                    <TableCell >{record.title} </TableCell>
-                                    <TableCell >{record.author} </TableCell>
-                                    <TableCell >{record.publisher} </TableCell>
-                                    <TableCell >{record.genre} </TableCell>
-                                    <TableCell >{record.year.slice(0, 4)} </TableCell>
-                                    <TableCell sx={{display: 'flex'}}>
-                                        <Controls.ActionButton
-                                            onClick={() => {openInPopup(record)}}
-                                            sx={{ 
-                                                minWidth: '0',
-                                                margin: theme => theme.spacing(.25),
-                                                padding: theme => theme.spacing(.2),
-                                                backgroundColor: '#ADD8E6',
-                                                color: "#333996"
-                                            }}
-                                        >
-                                            <EditIcon fontSize='small' />
-                                        </Controls.ActionButton>
-                                        <Controls.ActionButton
-                                            sx={{ 
-                                                minWidth: '0',
-                                                margin: theme => theme.spacing(.25),
-                                                padding: theme => theme.spacing(.2),
-                                                backgroundColor: '#ffcccb',
-                                                color: theme => theme.palette.error.dark
-                                            }}
-                                            onClick={() => 
-                                                setConfirmDialog({
-                                                    isOpen: true,
-                                                    title: 'Delete item',
-                                                    subtitle: 'Are you sure? This book will be lost forever.',
-                                                    onConfirm: () => { onDelete(record.id) }
-                                                })
-                                            }
-                                        >
-                                            <CloseIcon fontSize='small' />
-                                        </Controls.ActionButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                        </TblContainer>
-                        <TablePagination
-                            component='div'
-                            count={records.length}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            rowsPerPageOptions={pages}
-                            rowsPerPage={rowsPerPage} 
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
+                        {
+                        records.length > 0 ?
+                        <>
+                        <TblContainer>
+                            <TblHead />
+                            <TableBody >
+                                {recordsAfterPagingAndSorting()
+                                .slice(page*rowsPerPage, (page+1)*rowsPerPage)
+                                .map(record => (
+                                    <TableRow key={record.id} >
+                                        <TableCell >{record.title} </TableCell>
+                                        <TableCell >{record.author} </TableCell>
+                                        <TableCell >{record.publisher} </TableCell>
+                                        <TableCell >{record.genre} </TableCell>
+                                        <TableCell >{record.year.slice(0, 4)} </TableCell>
+                                        <TableCell sx={{display: 'flex'}}>
+                                            <Controls.ActionButton
+                                                onClick={() => {openInPopup(record)}}
+                                                sx={{ 
+                                                    minWidth: '0',
+                                                    margin: theme => theme.spacing(.25),
+                                                    padding: theme => theme.spacing(.2),
+                                                    backgroundColor: '#ADD8E6',
+                                                    color: "#333996"
+                                                }}
+                                            >
+                                                <EditIcon fontSize='small' />
+                                            </Controls.ActionButton>
+                                            <Controls.ActionButton
+                                                sx={{ 
+                                                    minWidth: '0',
+                                                    margin: theme => theme.spacing(.25),
+                                                    padding: theme => theme.spacing(.2),
+                                                    backgroundColor: '#ffcccb',
+                                                    color: theme => theme.palette.error.dark
+                                                }}
+                                                onClick={() => 
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Delete item',
+                                                        subtitle: 'Are you sure? This book will be lost forever.',
+                                                        onConfirm: () => { onDelete(record.id) }
+                                                    })
+                                                }
+                                            >
+                                                <CloseIcon fontSize='small' />
+                                            </Controls.ActionButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                            </TblContainer>
+                            <TablePagination
+                                component='div'
+                                count={records.length}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                rowsPerPageOptions={pages}
+                                rowsPerPage={rowsPerPage} 
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </>
+                        :
+                        <EmptyList />
+                        
+                        }
                 </Paper>
                 <Popup 
                     title='Book Form'

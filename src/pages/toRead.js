@@ -6,6 +6,7 @@ import { useState } from "react";
 import * as bookServices from '../services/book.service';
 import Controls from "../components/Controls";
 import SearchIcon from '@mui/icons-material/Search';
+import EmptyList from "../components/EmptyList";
 
 const headCells = [
     {id: 'title', label: 'Title'},
@@ -66,48 +67,55 @@ export default function ToRead() {
                     padding: theme => theme.spacing(3)
                 }}
             >
-                <Toolbar>
-                    <Controls.Input 
-                        label='Search book by title'
-                        sx={{
-                            width: '75%'
-                        }}
-                        InputProps={{
-                            startAdornment:
-                            (
-                                <InputAdornment position='start'>
-                                    <SearchIcon fontSize='small' />
-                                </InputAdornment>
-                            )
-                        }}
-                        onChange={handleSearch}
+                {
+                    records.filter(record => records.pageNo === '0' || records.pageNo === '' ).length > 0 ?
+                <>
+                    <Toolbar>
+                        <Controls.Input 
+                            label='Search book by title'
+                            sx={{
+                                width: '75%'
+                            }}
+                            InputProps={{
+                                startAdornment:
+                                (
+                                    <InputAdornment position='start'>
+                                        <SearchIcon fontSize='small' />
+                                    </InputAdornment>
+                                )
+                            }}
+                            onChange={handleSearch}
+                        />
+                    </Toolbar>
+                    <TblContainer>
+                        <TblHead />
+                        <TableBody>
+                            { recordsAfterPagingAndSorting()
+                            .filter(records => records.pageNo === '0' || records.pageNo === '')
+                            .slice(page*rowsPerPage, (page+1)*rowsPerPage)
+                            .map(record => (
+                                <TableRow key={record.id} >
+                                    <TableCell>{record.title}</TableCell>
+                                    <TableCell>{record.author}</TableCell>
+                                    <TableCell>{record.publisher}</TableCell>
+                                    <TableCell>{record.year}</TableCell>
+                                </TableRow>
+                            )) }
+                        </TableBody>
+                    </TblContainer>
+                    <TablePagination
+                        component='div'
+                        count={records.filter(record => record.pageNo === '0' || record.pageNo === '').length}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        rowsPerPageOptions={pages}
+                        rowsPerPage={rowsPerPage} 
+                        onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                </Toolbar>
-                <TblContainer>
-                    <TblHead />
-                    <TableBody>
-                        { recordsAfterPagingAndSorting()
-                        .filter(records => records.pageNo === '0' || records.pageNo === '')
-                        .slice(page*rowsPerPage, (page+1)*rowsPerPage)
-                        .map(record => (
-                            <TableRow key={record.id} >
-                                <TableCell>{record.title}</TableCell>
-                                <TableCell>{record.author}</TableCell>
-                                <TableCell>{record.publisher}</TableCell>
-                                <TableCell>{record.year}</TableCell>
-                            </TableRow>
-                        )) }
-                    </TableBody>
-                </TblContainer>
-                <TablePagination
-                    component='div'
-                    count={records.filter(record => record.pageNo === '0' || record.pageNo === '').length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPageOptions={pages}
-                    rowsPerPage={rowsPerPage} 
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                </>
+                : 
+                <EmptyList />
+                }
             </Paper>
         </Box>
     )

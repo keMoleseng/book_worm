@@ -6,6 +6,7 @@ import * as bookServices from '../services/book.service';
 import Controls from '../components/Controls';
 import { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import EmptyList from '../components/EmptyList';
 
 const headCells = [
     {id: 'title', label: 'Title'},
@@ -67,47 +68,54 @@ export default function CompletedReads(){
                     padding: (theme) => theme.spacing(3)
                 }}
             >
-                <Toolbar>
-                    <Controls.Input 
-                        label='Search by title'
-                        sx={{
-                            width: '75%'
-                        }}
-                        InputProps={{
-                            startAdornment:
-                            (
-                                <InputAdornment position='start'>
-                                    <SearchIcon fontSize='small' />
-                                </InputAdornment>
-                            )
-                        }}
-                        onChange={handleSearch}
-                    />
-                </Toolbar>
-                <TblContainer>
-                    <TblHead />
-                    <TableBody>
-                        {recordsAfterPagingAndSorting()
-                        .filter(record => record.readComplete)
-                        .slice(page*rowsPerPage, (page+1)*rowsPerPage)
-                        .map(record => (
-                            <TableRow key={record.id}>
-                                    <TableCell>{record.title}</TableCell>
-                                    <TableCell>{record.author}</TableCell>
-                                    <TableCell>{record.year}</TableCell>
-                                </TableRow>
-                        ))}
-                    </TableBody>
-                </TblContainer>
-                <TablePagination
-                    component='div'
-                    count={records.filter(record => record.readComplete).length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPageOptions={pages}
-                    rowsPerPage={rowsPerPage} 
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                {
+                    records.filter(record => record.readComplete).length > 0 ?
+                    <>
+                        <Toolbar>
+                            <Controls.Input 
+                                label='Search by title'
+                                sx={{
+                                    width: '75%'
+                                }}
+                                InputProps={{
+                                    startAdornment:
+                                    (
+                                        <InputAdornment position='start'>
+                                            <SearchIcon fontSize='small' />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                onChange={handleSearch}
+                            />
+                        </Toolbar>
+                        <TblContainer>
+                            <TblHead />
+                            <TableBody>
+                                {recordsAfterPagingAndSorting()
+                                .filter(record => record.readComplete)
+                                .slice(page*rowsPerPage, (page+1)*rowsPerPage)
+                                .map(record => (
+                                    <TableRow key={record.id}>
+                                            <TableCell>{record.title}</TableCell>
+                                            <TableCell>{record.author}</TableCell>
+                                            <TableCell>{record.year}</TableCell>
+                                        </TableRow>
+                                ))}
+                            </TableBody>
+                        </TblContainer>
+                        <TablePagination
+                            component='div'
+                            count={records.filter(record => record.readComplete).length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPageOptions={pages}
+                            rowsPerPage={rowsPerPage} 
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                </>
+                :
+                <EmptyList />
+                }
             </Paper>
         </Box>
     )
