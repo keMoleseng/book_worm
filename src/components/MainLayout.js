@@ -70,7 +70,7 @@ export default function MainLayout() {
                             <ListItemIcon>
                                 {route.icon}
                             </ListItemIcon>
-                             <RouterLink to={`/${route.label === 'home'? '' : route.label}`}>
+                             <RouterLink to={`/${route.label}`}>
                                 {route.label === 'toRead' ? 'To Read' : route.label[0].toUpperCase()+route.label.slice(1)}
                             </RouterLink> 
                         </ListItemButton>
@@ -80,7 +80,7 @@ export default function MainLayout() {
             </Drawer>
             <Header />
             <Routes>
-                <Route path='/' element={<Home />} />
+                <Route path='/home' element={<Home />} />
                 <Route path='/favourites' element={<Favourites />} />
                 <Route path='/library' element={<Books />}  />
                 <Route path='/bookmarks' element={<Bookmarks />}  />
