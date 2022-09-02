@@ -13,7 +13,8 @@ const initialValues = {
     year: "",
     genreId: "",
     readComplete: true,
-    pageNo: ''
+    pageNo: '',
+    isFavourite: false
 }
 
 export default function BookForm(props) {
