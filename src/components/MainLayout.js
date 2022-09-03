@@ -1,10 +1,8 @@
 import Header from "./Header";
 import Books from '../pages/Books';
-import Sidebar from '../components/Sidebar';
 import Favourites from '../pages/favourites';
 import Home from '../pages/home';
-import {Drawer, Link, Typography} from '@mui/material';
-import Divider from '@mui/material/Divider';
+import { Drawer } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';

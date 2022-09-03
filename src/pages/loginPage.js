@@ -1,9 +1,8 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, FormHelperText, Paper, Typography } from "@mui/material";
 import Controls from '../components/Controls';
 import LockIcon from '@mui/icons-material/Lock';
 import { Form } from '../components/useForm';
 import Footer from "../components/Footer";
-import styled from "@emotion/styled";
 
 export default function Login() {
    
@@ -18,7 +17,7 @@ export default function Login() {
                 height: '100vh'  
             }}
         >
-            <Text>This login form does not use real login details.</Text>
+          
             <Paper
                 sx={{
                     display: 'flex',
@@ -51,12 +50,14 @@ export default function Login() {
                     type='text'
                     required
                 />
+                <FormHelperText>Login with any credential</FormHelperText>
                 <Controls.Input 
                     label='Password'
                     variant='standard'
                     type='password'
                     required
                 /> 
+                <FormHelperText>Login with any credential</FormHelperText>
                 <Controls.Checkbox 
                     label='Remember me'
                 />
@@ -73,6 +74,3 @@ export default function Login() {
     )
 }
 
-const Text = styled.p`
-    font-size: 0.6rem
-`
