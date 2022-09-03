@@ -25,6 +25,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import CompletedReads from "../pages/completed";
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ToRead from "../pages/toRead";
+import Footer from "./Footer";
 
 const routes = [
     {label: 'home' , icon: <HomeIcon />},
@@ -87,7 +88,7 @@ export default function MainLayout() {
                 <Route path='/completed' element={<CompletedReads />}  />
                 <Route path='/toRead' element={<ToRead />}  />
             </Routes>
-            
+            <Footer />
         </>
     )
 }
