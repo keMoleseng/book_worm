@@ -142,6 +142,12 @@ export default function BookForm(props) {
                             onChange={handleChange}
                             
                         />
+                        <Controls.Checkbox 
+                            label="Favourite"
+                            name="isFavourite"
+                            value={values.isFavourite}
+                            onChange={handleChange}
+                        />
                         <Box component="div" sx={{display: "flex"}}>
                             <Controls.Button
                                 text="Submit"

@@ -98,7 +98,7 @@ export default function CompletedReads(){
                                     <TableRow key={record.id}>
                                             <TableCell>{record.title}</TableCell>
                                             <TableCell>{record.author}</TableCell>
-                                            <TableCell>{record.year}</TableCell>
+                                            <TableCell>{record.year.slice(0, 4)}</TableCell>
                                         </TableRow>
                                 ))}
                             </TableBody>
