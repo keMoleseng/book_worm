@@ -50,14 +50,14 @@ export default function Login() {
                     type='text'
                     required
                 />
-                <FormHelperText>Login with any credential</FormHelperText>
+                <FormHelperText sx={{color: '#ff9800', fontWeight:'500'}}>Fill in this field with any credentials.</FormHelperText>
                 <Controls.Input 
                     label='Password'
                     variant='standard'
                     type='password'
                     required
                 /> 
-                <FormHelperText>Login with any credential</FormHelperText>
+                <FormHelperText sx={{color: '#ff9800', fontWeight:'500'}}>Fill in this field with any credentials.</FormHelperText>
                 <Controls.Checkbox 
                     label='Remember me'
                 />
