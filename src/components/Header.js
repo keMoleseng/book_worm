@@ -64,7 +64,7 @@ export default function Header() {
                                     />
                                 </Badge>
                             </IconButton>
-                            <IconButton onClick={() => navigate('/login')}>
+                            <IconButton onClick={() => navigate('/')}>
                                 <LogoutIcon />
                             </IconButton>
                         </Grid>
