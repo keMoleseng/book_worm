@@ -96,7 +96,7 @@ export default function Bookmarks(props) {
                         <TblHead />
                         <TableBody>
                             {recordsAfterPagingAndSorting()
-                            .filter(record => !record.readComplete)
+                            .filter(record => !record.readComplete && record.pageNo !== "0")
                             .slice(page*rowsPerPage, (page+1)*rowsPerPage)
                             .map(record => 
                                 (

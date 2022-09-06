@@ -68,7 +68,7 @@ export default function ToRead() {
                 }}
             >
                 {
-                    records.filter(record => records.pageNo === '0' || records.pageNo === '' ).length > 0 ?
+                    records.filter(record => record.pageNo === '0' || record.pageNo === '' ).length > 0 ?
                 <>
                     <Toolbar>
                         <Controls.Input 
